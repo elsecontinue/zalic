@@ -1,0 +1,8 @@
+{
+  "name": "zalic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react",
+  "id": "bee37e31"
+}
