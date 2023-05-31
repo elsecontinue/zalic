@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonApp, IonContent, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
-import ViewMessage from './pages/ViewMessage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -26,22 +24,28 @@ import './theme/variables.css';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route path="/" exact={true}>
-          <Redirect to="/home" />
-        </Route>
-        <Route path="/home" exact={true}>
-          <Home />
-        </Route>
-        <Route path="/message/:id">
-           <ViewMessage />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
-);
+import MagicSquareForm from './components/MagicSquareForm';
+import MagicSquareService from './services/MagicSquareService';
+import Header from './components/Header';
+
+const App: React.FC = () => {
+  const [isMagicSquare, setIsMagicSquare] = useState(false);
+
+  const handleCheck = (matrix: number[][]) => {
+    const result = MagicSquareService.isMagicSquare(matrix);
+    setIsMagicSquare(result);
+  };
+
+  return (
+    <IonApp>
+      <Header />
+      <IonContent>
+        <MagicSquareForm onCheck={handleCheck} />
+        {isMagicSquare && <div>Введена матриця є магічним квадратом.</div>}
+        {!isMagicSquare && isMagicSquare !== null && <div>Введена матриця не є магічним квадратом.</div>}
+      </IonContent>
+    </IonApp>
+  );
+};
 
 export default App;
